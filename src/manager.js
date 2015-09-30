@@ -281,6 +281,25 @@ Manager.prototype.processOnMove = function (evt) {
         y: evt.pageY
     };
 
+    // We need to compute the position X / Y of the joystick.
+    var dumb = document.createElement('DIV');
+    dumb.style.display = 'hidden';
+    dumb.style.top = this.options.position.top;
+    dumb.style.right = this.options.position.right;
+    dumb.style.bottom = this.options.position.bottom;
+    dumb.style.left = this.options.position.left;
+    dumb.style.position = 'absolute';
+
+    this.options.zone.appendChild(dumb);
+    var dumbBox = dumb.getBoundingClientRect();
+    this.options.zone.removeChild(dumb);
+    var scroll = u.getScroll();
+
+    nipple.position = {
+        x: dumbBox.left + scroll.x,
+        y: dumbBox.top + scroll.y
+    };
+
     var dist = u.distance(pos, nipple.position);
     var angle = u.angle(pos, nipple.position);
     var rAngle = u.radians(angle);
